@@ -1,0 +1,10 @@
+Train | Epoch: 1 | Acc: 0.7627 | Loss: 0.7755 | grad: 3.2959253022391217
+Test  | Epoch: 1 | Acc: 0.7878 | Loss: 0.6270 | grad: 0.0
+Train | Epoch: 2 | Acc: 0.8099 | Loss: 0.5634 | grad: 2.787214845596495
+Test  | Epoch: 2 | Acc: 0.8107 | Loss: 0.5626 | grad: 0.0
+Train | Epoch: 3 | Acc: 0.8182 | Loss: 0.5321 | grad: 2.6994019763345185
+Test  | Epoch: 3 | Acc: 0.8195 | Loss: 0.5295 | grad: 0.0
+Train | Epoch: 4 | Acc: 0.8240 | Loss: 0.5152 | grad: 2.6436577496987006
+Test  | Epoch: 4 | Acc: 0.8078 | Loss: 0.5455 | grad: 0.0
+Train | Epoch: 5 | Acc: 0.8272 | Loss: 0.5045 | grad: 2.6112253205053464
+Test  | Epoch: 5 | Acc: 0.8230 | Loss: 0.5097 | grad: 0.0

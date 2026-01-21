@@ -1,0 +1,15 @@
+Run: Pretrained_Full | Epoch: 1 | Train Acc: 0.6633 | Test Acc: 0.9092
+Run: Pretrained_Full | Epoch: 2 | Train Acc: 0.9285 | Test Acc: 0.9253
+Run: Pretrained_Full | Epoch: 3 | Train Acc: 0.9584 | Test Acc: 0.9332
+Run: Pretrained_Full | Epoch: 4 | Train Acc: 0.9859 | Test Acc: 0.9351
+Run: Pretrained_Full | Epoch: 5 | Train Acc: 0.9924 | Test Acc: 0.9340
+Run: Random_Full | Epoch: 1 | Train Acc: 0.0291 | Test Acc: 0.0253
+Run: Random_Full | Epoch: 2 | Train Acc: 0.0304 | Test Acc: 0.0390
+Run: Random_Full | Epoch: 3 | Train Acc: 0.0310 | Test Acc: 0.0281
+Run: Random_Full | Epoch: 4 | Train Acc: 0.0334 | Test Acc: 0.0289
+Run: Random_Full | Epoch: 5 | Train Acc: 0.0375 | Test Acc: 0.0273
+Run: Pretrained_FinalBlock | Epoch: 1 | Train Acc: 0.6427 | Test Acc: 0.9101
+Run: Pretrained_FinalBlock | Epoch: 2 | Train Acc: 0.9087 | Test Acc: 0.9226
+Run: Pretrained_FinalBlock | Epoch: 3 | Train Acc: 0.9353 | Test Acc: 0.9294
+Run: Pretrained_FinalBlock | Epoch: 4 | Train Acc: 0.9462 | Test Acc: 0.9338
+Run: Pretrained_FinalBlock | Epoch: 5 | Train Acc: 0.9584 | Test Acc: 0.9267
