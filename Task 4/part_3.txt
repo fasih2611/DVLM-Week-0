@@ -1,0 +1,4 @@
+Zero-shot Accuracy: 97.36%
+Rotation Matrix R shape: (512, 512)
+Procrustes Accuracy: 97.94%
+Improvement: 0.58%
