@@ -5,11 +5,10 @@ import numpy as np
 import umap
 import matplotlib.pyplot as plt
 from scipy.linalg import orthogonal_procrustes
-from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 
-data_test = torchvision.datasets.STL10("./dataset",split="test",folds=0,download="True")
+data_test = torchvision.datasets.STL10("./dataset",split="test",folds=0,download=True)
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model, preprocess = clip.load("ViT-B/32", device=device)
 
@@ -30,7 +29,7 @@ def part_1():
     for image,label in data_test:
         image = preprocess(image).unsqueeze(0).to(device)
         with torch.no_grad():
-            image_features = model.encode_image(image)
+            image_features = model.encode_image(image) 
             for stratagy in prompt_accuracy.keys():
                 text = clip.tokenize(prompts[stratagy]).to(device)
                 text_features = model.encode_text(text)
@@ -71,8 +70,8 @@ def part_2():
     embeddings_2d_umap = reducer_umap.fit_transform(all_embeddings)
     print("GENERATED")
 
-    image_2d_umap = embeddings_2d_umap[:num_samples]
-    text_2d_umap = embeddings_2d_umap[num_samples:]
+    image_2d_umap = embeddings_2d_umap[:num_samples] #type: ignore
+    text_2d_umap = embeddings_2d_umap[num_samples:] #type: ignore
 
     image_embeddings_norm = image_embeddings / np.linalg.norm(image_embeddings, axis=1, keepdims=True)
     text_embeddings_norm = text_embeddings_sampled / np.linalg.norm(text_embeddings_sampled, axis=1, keepdims=True)
@@ -81,24 +80,23 @@ def part_2():
     reducer_umap_norm = umap.UMAP(n_components=2, random_state=42, n_neighbors=15, min_dist=0.1)
     embeddings_2d_norm_umap = reducer_umap_norm.fit_transform(all_embeddings_norm)
 
-    image_2d_norm = embeddings_2d_norm_umap[:num_samples]
-    text_2d_norm = embeddings_2d_norm_umap[num_samples:]
+    image_2d_norm = embeddings_2d_norm_umap[:num_samples]#type: ignore
+    text_2d_norm = embeddings_2d_norm_umap[num_samples:]#type: ignore
 
-    fig, axes = plt.subplots(2, 3, figsize=(20, 13))
-    colors = plt.cm.tab10(np.linspace(0, 1, 10))
+    _, axes = plt.subplots(2, 3, figsize=(20, 13))
     ax = axes[0, 0]
-    scatter1 = ax.scatter(image_2d_umap[:, 0], image_2d_umap[:, 1], c=labels, cmap='tab10',
+    scatter1 = ax.scatter(image_2d_umap[:, 0], image_2d_umap[:, 1], c=labels, cmap='tab10', #type:ignore
                           alpha=0.6, s=80, label='images', marker='o', edgecolors='black', linewidths=0.5)
-    scatter2 = ax.scatter(text_2d_umap[:, 0], text_2d_umap[:, 1], c=labels, cmap='tab10',
+    scatter2 = ax.scatter(text_2d_umap[:, 0], text_2d_umap[:, 1], c=labels, cmap='tab10', #type:ignore
                           alpha=0.9, s=120, label='Text', marker='X', edgecolors='black', linewidths=1.5)
     ax.set_title('UMAP: image and text embeddings by class', fontsize=13, fontweight='bold')
     ax.legend(loc='upper right', fontsize=10)
     ax.grid(True, alpha=0.3)
 
     ax = axes[0, 2]
-    ax.scatter(image_2d_umap[:, 0], image_2d_umap[:, 1], c='blue',
+    ax.scatter(image_2d_umap[:, 0], image_2d_umap[:, 1], c='blue', #type:ignore
                alpha=0.7, s=80, label='Images', edgecolors='black', linewidths=0.5)
-    ax.scatter(text_2d_umap[:, 0], text_2d_umap[:, 1], c='red',
+    ax.scatter(text_2d_umap[:, 0], text_2d_umap[:, 1], c='red', #type:ignore
                alpha=0.7, s=80, label='Text', edgecolors='black', linewidths=0.5)
     ax.set_title('UMAP: Modality Separation (Image vs Text)', fontsize=13, fontweight='bold')
     ax.set_xlabel('UMAP Dimension 1', fontsize=11)
@@ -107,9 +105,9 @@ def part_2():
     ax.grid(True, alpha=0.3)
 
     ax = axes[1, 0]
-    ax.scatter(image_2d_norm[:, 0], image_2d_norm[:, 1], c=labels, cmap='tab10',
+    ax.scatter(image_2d_norm[:, 0], image_2d_norm[:, 1], c=labels, cmap='tab10', #type:ignore
                alpha=0.6, s=80, label='Images (normalized)', marker='o', edgecolors='black', linewidths=0.5)
-    ax.scatter(text_2d_norm[:, 0], text_2d_norm[:, 1], c=labels, cmap='tab10',
+    ax.scatter(text_2d_norm[:, 0], text_2d_norm[:, 1], c=labels, cmap='tab10', #type:ignore
                alpha=0.9, s=120, label='Text (normalized)', marker='X', edgecolors='black', linewidths=1.5)
     ax.set_title('UMAP: normalized embeddings', fontsize=13, fontweight='bold')
     ax.legend(loc='upper right', fontsize=10)
@@ -175,7 +173,7 @@ def part_3():
       with torch.no_grad():
           # Using tqdm here because it looks nice
           for image, label in tqdm(dataset, desc=" feat extraction"):
-              img_feats = model.encode_image(img_input)
+              img_feats = model.encode_image(image)
               img_feats = img_feats / img_feats.norm(dim=1, keepdim=True)
               all_image_features.append(img_feats.cpu().numpy())
 
@@ -220,24 +218,23 @@ def part_3():
 
     X_sub = X[indices]
     Y_sub = Y[indices]
-    labels_sub = labels[indices]
 
     X_aligned_sub = X_aligned[indices]
     umap_transformation = umap.UMAP(n_components=2, random_state=42)
     all_vecs = np.vstack([X_sub, Y_sub, X_aligned_sub])
-    embedding_2d = umap_transformation.fit_transform(all_vecs)
-    emb_img_orig = embedding_2d[:num_samples]
-    emb_text= embedding_2d[num_samples:2*num_samples]
-    emb_img_align= embedding_2d[2*num_samples:]
-    fig, axes = plt.subplots(1, 2, figsize=(16, 7))
-    axes[0].scatter(emb_img_orig[:, 0], emb_img_orig[:, 1], c='blue', alpha=0.5, label='images', s=15)
-    axes[0].scatter(emb_text[:, 0], emb_text[:, 1], c='red', alpha=0.5, label='Text', s=15)
+    embedding_2d = umap_transformation.fit_transform(all_vecs) 
+    emb_img_orig = embedding_2d[:num_samples] #type: ignore
+    emb_text= embedding_2d[num_samples:2*num_samples] #type: ignore
+    emb_img_align= embedding_2d[2*num_samples:] #type: ignore
+    _, axes = plt.subplots(1, 2, figsize=(16, 7))
+    axes[0].scatter(emb_img_orig[:, 0], emb_img_orig[:, 1], c='blue', alpha=0.5, label='images', s=15) #type: ignore
+    axes[0].scatter(emb_text[:, 0], emb_text[:, 1], c='red', alpha=0.5, label='Text', s=15) #type: ignore
     axes[0].set_title("Before Alignment: The Modality Gap")
     axes[0].legend()
     axes[0].grid(True, alpha=0.3)
 
-    axes[1].scatter(emb_img_align[:, 0], emb_img_align[:, 1], c='green', alpha=0.5, label='images', s=15)
-    axes[1].scatter(emb_text[:, 0], emb_text[:, 1], c='red', alpha=0.5, label='Text', s=15)
+    axes[1].scatter(emb_img_align[:, 0], emb_img_align[:, 1], c='green', alpha=0.5, label='images', s=15) #type: ignore
+    axes[1].scatter(emb_text[:, 0], emb_text[:, 1], c='red', alpha=0.5, label='Text', s=15) #type: ignore
     axes[1].set_title("After Procrustes Alignment")
     axes[1].legend()
     axes[1].grid(True, alpha=0.3)
