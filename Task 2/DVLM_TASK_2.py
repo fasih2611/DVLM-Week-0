@@ -42,6 +42,7 @@ def visualize_overlay(img, att_map, pred_label):
     plt.title(f"Pred: {model.config.id2label[pred_label].split(',')[0]}")
     plt.axis('off')
     plt.tight_layout()
+    plt.savefig("task 2, attention overlay.png")
     plt.show()
 
 def mask_image(img_tensor, mask_type="random", ratio=0.25):
